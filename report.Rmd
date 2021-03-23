@@ -1,0 +1,76 @@
+---
+title: "Report"
+author: "Sibora Seranaj"
+date: "3/21/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F, message = F)
+```
+
+```{r load-packages}
+library(ggsci)
+library(car)
+library(survival)
+library(eha)
+library(survminer)
+library(knitr)
+library(broom)
+library(readr)
+library(ggplot2)
+library(stats)
+library(tidyverse)
+```
+
+# 1. Introduction
+
+## 1.1 Background
+
+In the United Stated, 1 in every 6 deaths from cardiovascular disease is due to stroke, and every 4 minutes, someone dies of stroke. Around 87% of all strokes are ischemic strokes, in which blood flow to the brain is blocked. Hemorrhagic strokes occur when a blood vessel ruptures inside the brain. Stroke leads to long-term physical and psychological disability. [1][2]
+
+Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medication is used to prevent blood from clotting, therefore help reduce the risk of a recurrent stroke and death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications may reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action. [3] Previous research shows that their comparative effectiveness is not clear. XXXX REVIEW THIS
+ 
+
+# 1.2 Research Goals
+
+In this research, we intend to explore the comparative effectiveness of using aspirin, heparin, both or neither by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in the proportion of patients who experience recurrent strokes. The null hypotheses for these objectives would be that the treatments do not differ in their effects on a) and b) after controlling for potential confounders.
+
+# 1.3 Data
+
+The International Stroke Trial was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, heparin, both or neither, and then followed throughout the clinical course of their acute ischemic stroke. Both the physicians and the patients were aware of the treatment assigned. The data used in this project was modified from the original IST publication by Sandercock et al, who anonymized, formatted the dataset and made it publicly available. [5] The dataset contains information on 19,435 patients. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. 
+
+# 1.4 Variables
+
+The responses variables for three objectives are: (a) time-to-death, (b) recurrent stroke. The predictor variables include physical characteristics such as age, sex, systolic blood pressure, atrial fibrillation, physical deficit, consciousness and stroke subtype. This information was gathered at randomisation. Moreover, XXXXX SEE IF YOU CAN INCLUDE OTHER VARIABLE LIKE WHERE THE PATIENT LIVES
+
+WRITE THE PROCESS OF DATA CLEANING TOMORROW
+
+
+# 1.5 Exploratory Data Analysis
+
+XXXXXX FOR OBJECTIVE ONE INCLUDE INCLUDE KM CURVES TOMORROW
+
+XXXXXX FOR OBJECTIVE TWO INCLUDE GRAPH THAT SHOWS DIFFERENCE IN STROKES FOR EACH COMBO
+
+# 2 Methodology
+XXXXX OBJECTIVE ONE IS COX MODEL ### ask professor for itt and per-protocol (is itt in this case all patients, but per-protocol the ones that did the full treatment of 14 days? What about people who died therefore couldnt do the full treatment? Should they be included, and only the ones that stopped taking but stayed alive be excluded) TOMORROW WRITE THE METHOD AND CONTACT PROFESOR 
+
+
+XXXXX OBJECTIVE TWO IS LOGISTIC REGRESSION - this still has not been worked on
+
+
+# 3 Results
+
+# Bibliography
+
+[1] Centers for Disease Control and Prevention. Underlying Cause of Death, 1999–2018. CDC WONDER Online Database. Atlanta, GA: Centers for Disease Control and Prevention; 2018. Accessed March 12, 2020. 
+
+[2] Virani SS, Alonso A, Benjamin EJ, Bittencourt MS, Callaway CW, Carson AP, et al. Heart disease and stroke statistics—2020 update: a report from the American Heart Associationexternal icon. Circulation. 2020;141(9):e139–e596.
+[3] https://www.stroke.org/en/life-after-stroke/preventing-another-stroke/anti-clotting-agents-explained
+
+[3] The International Stroke Trial (IST): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19435 patients with acute ischaemic stroke. International Stroke Trial Collaborative Group. Lancet. 1997 May 31;349(9065):1569-81. PMID: 9174558.
+
+[4] Sandercock, P.A., Niewada, M., Członkowska, A. et al. The International Stroke Trial database. Trials 12, 101 (2011). https://doi.org/10.1186/1745-6215-12-101 
+
+[5] Sandercock, Peter; Niewada, Maciej; Czlonkowska, Anna. (2011). International Stroke Trial database (version 2), [dataset]. University of Edinburgh. Department of Clinical Neurosciences. https://doi.org/10.7488/ds/104
