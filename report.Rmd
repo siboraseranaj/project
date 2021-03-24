@@ -27,34 +27,53 @@ library(tidyverse)
 
 ## 1.1 Background
 
-In the United Stated, 1 in every 6 deaths from cardiovascular disease is due to stroke, and every 4 minutes, someone dies of stroke. Around 87% of all strokes are ischemic strokes, in which blood flow to the brain is blocked. Hemorrhagic strokes occur when a blood vessel ruptures inside the brain. Stroke leads to long-term physical and psychological disability. [1][2]
+In the United States, 1 in every 6 deaths from cardiovascular disease is due to stroke, and every 4 minutes, someone dies of stroke. Around 87% of all strokes are ischemic strokes, in which blood flow to the brain is blocked. Hemorrhagic strokes occur when a blood vessel ruptures inside the brain. Stroke leads to long-term physical and psychological disability. [1][2]
 
-Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medication is used to prevent blood from clotting, therefore help reduce the risk of a recurrent stroke and death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications may reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action. [3] Previous research shows that their comparative effectiveness is not clear. XXXX REVIEW THIS
+Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medications are used to prevent blood from clotting, therefore they may help reduce the risk of a recurrent stroke and possibly death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications may reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action.[3] Previous research shows that their comparative effectiveness is not clear. XXXX REVIEW THIS
  
 
 # 1.2 Research Goals
 
-In this research, we intend to explore the comparative effectiveness of using aspirin, heparin, both or neither by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in the proportion of patients who experience recurrent strokes. The null hypotheses for these objectives would be that the treatments do not differ in their effects on a) and b) after controlling for potential confounders.
+In this research, we intend to explore the comparative effectiveness of using aspirin, heparin, or both by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in the proportion of patients who experience recurrent strokes. The null hypotheses for these objectives would be that the treatments do not differ in their effects on a) and b) after controlling for potential confounders.
 
 # 1.3 Data
 
-The International Stroke Trial was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, heparin, both or neither, and then followed throughout the clinical course of their acute ischemic stroke. Both the physicians and the patients were aware of the treatment assigned. The data used in this project was modified from the original IST publication by Sandercock et al, who anonymized, formatted the dataset and made it publicly available. [5] The dataset contains information on 19,435 patients. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. 
+The data used in this project was modified from the original International Stroke Trial publication by Sandercock et al, who anonymized, formatted the dataset and made it publicly available. [5]  IST was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, subcutenous heparin, both or neither, and then followed throughout the clinical course of their stroke. The treatment was given immediately upon randomization. Assigned heparin dosages could be either 5000 IU or 12,500 IU, while aspirin dosages were 300 mg. Both the physicians and the patients were aware of the treatment assigned. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. 
+
 
 # 1.4 Variables
 
-The responses variables for three objectives are: (a) time-to-death, (b) recurrent stroke. The predictor variables include physical characteristics such as age, sex, systolic blood pressure, atrial fibrillation, physical deficit, consciousness and stroke subtype. This information was gathered at randomisation. Moreover, XXXXX SEE IF YOU CAN INCLUDE OTHER VARIABLE LIKE WHERE THE PATIENT LIVES
+The original dataset contains information on 19,435 patients. The response variables for the objectives are: (a) time-to-death and (b) recurrent stroke. The main predictor variable of interest is treatment group, and other variables are included to control for their effect on the treatment outcome. Specifically, the predictor variables include age, sex, systolic blood pressure, and atrial fibrillation, physical deficit, state of consciousness and stroke subtype. These variables provide insight on the state of health of the patients at the time of randomization. 
 
-WRITE THE PROCESS OF DATA CLEANING TOMORROW
+Most patients presented with a mixture of symptoms (face deficit, leg/foot deficit, hand/arm deficit, dysphasia, hemianopia, visuospatial disorder, brainstem/cerebellar signs), therefore the physical deficit variable was created to indicate the total number of symptoms that the patient had. Each symptom was considered present only if the physician had successfully diagnosed it. Stroke subtype is treated as a categorical variable, with levels: total anterior circulation syndrome (TACS), partial anterior circulation syndrome (PACS), posterior circulation syndrome (POCS) and lacunar syndrome (LACS). The state of consciousness is treated as a categorical variable with three levels: fully conscious, drowsy and unconscious.
+
+The treatment variable was created to describe the type of treatment that the patients were assigned. This variable is categorical and has four levels: aspirin (RXASP= "Y" and RHXEP= "N"), heparin (RXHEP = "M" or "H" and RXASP = "N"), both (RXHEP = "M" or "H" and RXASP = "Y" ), and none (RXASP= "N" and RHXEP= "N"). It should be noted that in the original trial the patients were assigned two doses of heparin (heparin = "H" or heparin = "M", which are the same amount of drug, despite the different encoding) or (heparin = "L"). XX In this research we simply indicate the presence of heparin, and ignore the dosage. WHY THOUGH? MAYBE WE HAVE TO DIFFERENTIATE XX 
+
+The variables age, systolic blood pressure, and atrial fibrillation are treated as numerical variables. It should be noted that 934 patients who participated in the pilot phase of the trial did not have atrial fibrillation values and were therefore excluded from this study. 
+
+
+XXXXX SEE IF YOU CAN INCLUDE OTHER VARIABLE LIKE WHERE THE PATIENT LIVES. DOES ANYONE GET TWO STROKES? DO EDA ON NUMBER OF PEOPLE WITH STROKES FOR EACH DRUG. IS THERE DISPARATY? SEE IF YOU NEED TO DO THE ANALYSIS ONLY ON THE PEOPLE WHO DIED DUE TO THE INITIAL STROKE, SO LOOK AT VARIABLE CAUSE OF DEATH
 
 
 # 1.5 Exploratory Data Analysis
 
 XXXXXX FOR OBJECTIVE ONE INCLUDE INCLUDE KM CURVES TOMORROW
 
+
+
 XXXXXX FOR OBJECTIVE TWO INCLUDE GRAPH THAT SHOWS DIFFERENCE IN STROKES FOR EACH COMBO
 
 # 2 Methodology
-XXXXX OBJECTIVE ONE IS COX MODEL ### ask professor for itt and per-protocol (is itt in this case all patients, but per-protocol the ones that did the full treatment of 14 days? What about people who died therefore couldnt do the full treatment? Should they be included, and only the ones that stopped taking but stayed alive be excluded) TOMORROW WRITE THE METHOD AND CONTACT PROFESOR 
+
+## 2.1 The Cox Proportional Hazard Model
+
+The Kaplan-Meier survival curves in subsection 1.5 showed significant overlap, therefore the log-rank test is not very powerful in determining if there is a difference in survival rates. Therefore, we decided to fit a survival model, which allows us to control for potential confounders. We did not to use an Accelerated Failure Time model, because we do not have enough prior knowledge to appropriately specify a distribution for the error term. In our case, the Cox proportional hazard model is more suitable, because it is semiparametric, and we do not have to make assumptions on the distribution of the baseline hazard function. 
+
+XXXX put here variables used and full model
+
+We calculated Schoenfeld residuals in order to evaluate the proportional hazards assumption. We also calculated deviance residuals in order to asses model assumptions. More details can be found in the Appendix section.
+
+ ### ask professor for itt and per-protocol (is itt in this case all patients, but per-protocol the ones that did the full treatment of 14 days? What about people who died therefore couldnt do the full treatment? Should they be included, and only the ones that stopped taking but stayed alive be excluded) TOMORROW WRITE THE METHOD AND CONTACT PROFESOR 
 
 
 XXXXX OBJECTIVE TWO IS LOGISTIC REGRESSION - this still has not been worked on
