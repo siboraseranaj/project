@@ -1,0 +1,168 @@
+---
+title: "model"
+author: "Sibora Seranaj"
+date: "3/21/2021"
+output: html_document
+---
+```{r}
+library(survival)
+library(survminer)
+library(readr)
+library(rms)
+library(knitr)
+library(broom)
+library(tidyverse)
+library(plotROC)
+library(dplyr)
+library(nnet)
+library(eha)
+library(sjPlot)
+library(sjlabelled)
+library(sjmisc)
+library(ggplot2)
+library(pscl)
+library(GLMMadaptive)
+library(foreign)
+library(MASS)
+library(Hmisc)
+library(reshape2)
+library(brant)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+objective1 <- read_csv("STA440- Project/HEPorASP.csv")
+View(objective1)
+```
+
+# Objective 1
+## Kaplan Meier Curve
+### Aspirin vs Heparin
+
+```{r}
+objective1$strokesubtype <- relevel(as.factor(objective1$strokesubtype), ref = "PACS")
+objective1$concious <- relevel(as.factor(objective1$concious), ref = "F")
+```
+
+```{r}
+surv_object <- Surv(time = objective1$timedeath, event = objective1$death)
+```
+
+```{r}
+Surv(objective1$timedeath, objective1$death)[0:10]
+
+```
+
+
+```{r}
+fit1 <- survfit(surv_object ~ 1, data = objective1)
+```
+
+### Comparing two treatment groups
+```{r}
+fit2 <- survfit(surv_object ~ trt, data = objective1)
+```
+
+### Plot
+```{r}
+ggsurvplot(fit1, xlab = "Days", ylab = "Est. Survival Probability")
+
+ggsurvplot(fit2, xlab = "Days", ylab = "Est. Survival Probability", xlim =c(0,195), ylim = c(0.65, 1), conf.int = T, censor = F, legend.labs = c("ASPIRIN", "HEPARIN"))
+
+ggsurvplot(fit2, xlab = "Days", ylab = "Est. Event Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("ASPIRIN", "HEPARIN"))
+```
+It seems like there are some differences in survival but there is also overlap, especially in the earlier days. A log-rank test may not be fully appropriate - fitting one out of curiosity. 
+
+### do log rank test
+
+```{r}
+survdiff(surv_object ~ trt, data = objective1)
+```
+Null hypothesis: Difference in time-to-death between each drug treatment. Make a model for survival time. 
+
+## The Cox Proportional Hazard model
+
+### ask professor for itt and per-protocol (is itt in this case all patients, but per-protocol the ones that did the full treatment of 14 days? What about people who died therefore couldnt do the full treatment? Should they be included, and only the ones that stopped taking but stayed alive be excluded)
+
+# All patients, so ITT - this is more appropriate because https://www.ncbi.nlm.nih.gov/pmc/articles/PMC81628/
+
+
+```{r}
+coxm1 <- coxph(surv_object ~ trt  + timedelay + atrialfibrillation + sex + age + concious + infarct + bloodpressure + strokesubtype + physicaldeficit, data = objective1)
+summary(coxm1)
+```
+several significant variables
+
+# Diagnostics
+
+```{r} 
+#schoenfeld
+ggcoxdiagnostics(coxm1, type = "schoenfeld")
+```
+
+ 
+```{r}
+#deviance 
+ggcoxdiagnostics(coxm1, type = "deviance", linear.predictions = F)
+```
+## HeparinL vs heparinH
+
+```{r}
+objective2 <- read_csv("STA440- Project/HEP_LorH.csv")
+View(objective2)
+```
+
+```{r}
+objective2$strokesubtype <- relevel(as.factor(objective2$strokesubtype), ref = "PACS")
+objective2$concious <- relevel(as.factor(objective2$concious), ref = "F")
+#objective1 <- objective1 %>% 
+  #mutate(treatment_Aspirin  = case_when(
+    #trt == "ASP" ~ 1,
+    #TRUE ~ 0
+  #))
+```
+
+```{r}
+surv_object <- Surv(time = objective2$timedeath, event = objective2$death)
+```
+
+```{r}
+Surv(objective2$timedeath, objective2$death)[0:10]
+
+```
+
+
+```{r}
+fit1 <- survfit(surv_object ~ 1, data = objective2)
+```
+
+### Comparing two treatment groups
+```{r}
+fit2 <- survfit(surv_object ~ trt_hep, data = objective2)
+```
+
+### Plot
+```{r}
+ggsurvplot(fit1, xlab = "Days", ylab = "Est. Survival Probability")
+
+ggsurvplot(fit2, xlab = "Days", ylab = "Est. Survival Probability", xlim =c(0,195), ylim = c(0.65, 1), conf.int = T, censor = F, legend.labs = c("low", "high"))
+
+ggsurvplot(fit2, xlab = "Days", ylab = "Est. Event Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("low", "high"))
+```
+
+```{r}
+coxm2 <- coxph(surv_object ~ trt_hep  + timedelay + atrialfibrillation + sex + age + concious + infarct + bloodpressure + strokesubtype + physicaldeficit, data = objective2)
+summary(coxm2)
+```
+```{r} 
+#schoenfeld
+ggcoxdiagnostics(coxm2, type = "schoenfeld")
+```
+
+```{r}
+#deviance 
+ggcoxdiagnostics(coxm2, type = "deviance", linear.predictions = F)
+```
