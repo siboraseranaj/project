@@ -81,35 +81,34 @@ fit4 <- survfit(surv_object2 ~ trt_hep, data = objective2)
 
 In the United States, 1 in every 6 deaths from cardiovascular disease is due to stroke, and every 4 minutes, someone dies of stroke. Around 87% of all strokes are ischemic strokes, in which blood flow to the brain is blocked. Hemorrhagic strokes occur when a blood vessel ruptures inside the brain. Stroke leads to long-term physical and psychological disability. [1][2]
 
-Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medications are used to prevent blood from clotting, therefore they may help reduce the risk of a recurrent stroke and death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications might reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action, and previous research shows that their comparative effectiveness is not clear. [3][insert lit review]
+Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medications are used to prevent blood from clotting, therefore they may help reduce the risk of a recurrent stroke and death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications might reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action, and previous research shows that their comparative effectiveness is not clear. [3][4]
  
 # 1.2 Research Goals
 
-In this research, we intend to explore the comparative effectiveness of early administration of aspirin and heparin by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in the proportion of patients who experience recurrent strokes. The null hypotheses for these objectives would be that the treatments do not differ after controlling for potential confounders.
-
-(NOTE FOR PROFESSOR: I also want to look at the difference between low dose heparin vs high dose heparin, but I do not know how to word this here professionally)
+In this research, we intend to explore the comparative effectiveness of early administration of aspirin and heparin by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in time from diagnosis of the acute stroke until a recurrent stroke. The null hypotheses for these objectives would be that the treatments do not differ after controlling for potential confounders.
 
 # 1.3 Data
 
-The data used in this project was modified from the original International Stroke Trial publication by Sandercock et al, who anonymized, formatted the dataset and made it publicly available. [5] IST was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, subcutenous heparin, both, or neither, and then followed throughout the clinical course of their stroke. The treatment was given immediately upon randomization. Assigned heparin dosages were either 5000 IU or 12,500 IU, while aspirin dosages were always 300 mg. Both the physicians and the patients were aware of the treatment assigned. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. 
+The data used in this project was modified from the original International Stroke Trial publication by Sandercock et al, who anonymized, formatted the dataset and made it publicly available. [5] IST was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, subcutenous heparin, both, or neither, and then followed throughout the clinical course of their stroke. The treatment was given immediately upon randomization. Assigned heparin dosages were either 5000 IU or 12,500 IU, while aspirin dosages were always 300 mg. Both the physicians and the patients were aware of the treatment assigned. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. The primary outcomes of the trial were recurrent stroke within 14 days, and death within 6 months of diagnosis.
 
 
 # 1.4 Variables
 
-The original dataset contains information on 19,435 patients. The response variables for the objectives are: (a) time-to-death and (b) recurrent stroke. The main predictor variable of interest is the treatment group, and other variables are included to control for their effect on the treatment outcome. Specifically, the predictor variables include age, sex, systolic blood pressure, atrial fibrillation, physical deficit, state of consciousness and stroke subtype. These variables were chosen because provide insight on the state of health of the patients at the time of randomization. 
-
-Most patients presented with a mixture of symptoms (face deficit, leg/foot deficit, hand/arm deficit, dysphasia, hemianopia, visuospatial disorder, brainstem/cerebellar signs), therefore the physical deficit variable was created to indicate the total number of symptoms that the patient experienced. Each symptom was considered present only if the physician had successfully diagnosed it.
-
-Stroke subtype is treated as a categorical variable, with levels: total anterior circulation syndrome (TACS), partial anterior circulation syndrome (PACS), posterior circulation syndrome (POCS) and lacunar syndrome (LACS). The state of consciousness is treated as a categorical variable with three levels: fully conscious, drowsy and unconscious. (Should I even keep this variable)
+The response variables for the objectives are: (a) time-to-death and (b) time-to-recurrent stroke. The main predictor variable of interest is the treatment group, and the other variables are included to control for their effect on the treatment outcome. Across both objectives, the predictor variables include age, sex, systolic blood pressure, atrial fibrillation, physical deficit, state of consciousness and stroke subtype. These variables were chosen because they provide insight on the state of health of the patients at the time of randomization, and because existing literature has indicated a relationship between these variables and stroke fatalities. For example, sex, age, blood pressure and atrial fibrillation are considered critical factors in stroke pathology in previous studies. (https://www.ahajournals.org/doi/full/10.1161/strokeaha.115.009592#:~:text=Lowering%20blood%20pressure%20(BP)%20after,in%20hypertensive%20patients%20is%20unclear.)(https://academic.oup.com/endo/article/159/8/3120/5051605). Moreover, the association between different stroke subtypes and mortality is an active area of research, with several studies suggesting a possible relationship between the two, therefore we deemed it appropriate to include it in our study. Lastly, we believe that the presence of multiple stroke-related physical deficits and the state of consciousness of the patient might be indicators of the severity of the stroke, and the area of brain affected by it, which then might have an effect on recurrent strokes and/or death.
 
 The treatment variable was created to describe the type of treatment that the patients were assigned. This variable is categorical and has four levels: aspirin (`RXASP = "Y"` and `RHXEP= "N"`), heparin (`RXHEP = "M"` or `"H" and RXASP = "N"`), both (`RXHEP = "M"` or `"H" and RXASP = "Y"`), and none (`RXASP= "N"` and `RHXEP= "N"`). It should be noted that in the original trial the patients were assigned two doses of heparin: high (`heparin = "H"` or `heparin = "M"`, which are the same amount of drug, despite the different encoding in the original study) or low (`heparin = "L"`).
 
-The variables age, systolic blood pressure, and atrial fibrillation are treated as numerical variables. It should be noted that 934 patients who participated in the pilot phase of the trial did not have atrial fibrillation values and were therefore excluded from this study. 
+Stroke subtype is treated as a categorical variable, with levels: total anterior circulation syndrome (TACS), partial anterior circulation syndrome (PACS), posterior circulation syndrome (POCS) and lacunar syndrome (LACS). The state of consciousness is treated as a categorical variable with three levels: fully conscious, drowsy and unconscious. 
+
+Given that most patients presented with a mixture of physical symptoms (face deficit, leg/foot deficit, hand/arm deficit, dysphasia, hemianopia, visuospatial disorder, brainstem/cerebellar signs), it was deemed appropriate to create the physical deficit variable to indicate the total number of symptoms that the patient experienced. Each symptom was considered present only if a physician had successfully diagnosed it. The physical deficit variable, age, systolic blood pressure, and atrial fibrillation are treated as numerical. 
+
+It should be noted that a relatively small number of patients with missing or incomplete data in any of the fields mentioned above were excluded from the study. The final dataset contains information on xxx patients.
 
 # 1.5 Exploratory Data Analysis
+
 ### 1.5.1 Objective 1
 
-We compared the primary outcome of the number of days from the patients' stroke admission date to the date the patient died between the aspirin only and heparin only treatment groups. We chose an intention-to-treat analysis, which means that we included all the patients regardless if they followed the directions for their treatment. Because the reasons for nonadherence to the protocol might be related to the patients' prognosis, the ITT analysis is deemed more appropriate. Previous research has also showed strong indication to using ITT analysis in such cases. [5] 
+We compared the primary outcome of the number of days from the patients' stroke admission date to the date the patient died between the aspirin only and heparin only treatment groups. We chose an intention-to-treat analysis, which means that the study included all the patients regardless if they followed the directions for their treatment. Because the reasons for nonadherence to the protocol might be related to the patients' prognosis, the ITT analysis is considered more appropriate. Previous research has also showed strong indication to using ITT analysis in such cases. [5] 
 
 The Kaplan-Meier curve shows that patients who received aspirin have a higher survival probability than those who received heparin. However it should be noted that the confidence intervals of these curves overlap significantly, especially in the earlier days. 
 
@@ -201,33 +200,46 @@ The logistic model assumptions such as independent observations, binary response
 |---------------- | ----------------: | ------------------:| :----------------- 
 | Treatment: Heparin            |   1.097 | 0.045 | 0.039  *  | 
 | Time delay       |    0.998 | 0.0019 | 0.152    |
-| Atrial fibrillation |  1.408 | 0.050  | <0.001 ***| 
+| Atrial fibrillation |  1.408 | 0.050  | <0.001 **| 
 | Sex: Male  |               1.113 | 0.046  | 0.021 *  | 
-| Age  |                1.046 | 0.003 | <0.001 *** | 
-| Concious: Drowsy    |       2.582 |  0.052 | <0.001 *** | 
-| Concious: Unconcious    |  9.654 |  0.106 |  <0.001 ***
+| Age  |                1.046 | 0.003 | <0.001 ** | 
+| Concious: Drowsy    |       2.582 |  0.052 | <0.001 ** | 
+| Concious: Unconcious    |  9.654 |  0.106 |  <0.001 **
 | Infarct    |         1.123 | 0.048  | 0.017  *  | 
 | Blood pressure   |    0.998  | 0.001 | 0.012 *  | 
-| Stroke subtype: LACS|   0.703 | 0.086 | <0.001 *** | 
+| Stroke subtype: LACS|   0.703 | 0.086 | <0.001 ** | 
 | Stroke subtype: Other |    1.805 | 0.504  | 0.241 |    
 | Stroke subtype: POCS |  0.991 | 0.083 | 0.9169   |  
-| Stroke subtype: TACS  |  1.317 | 0.061  | <0.001 *** | 
-| Physical deficit  |    1.152 | 0.022  | <0.001 *** | 
+| Stroke subtype: TACS  |  1.317 | 0.061  | <0.001 ** | 
+| Physical deficit  |    1.152 | 0.022  | <0.001 ** | 
 
 \begin{center}
-Output of Cox Proportional Hazard Model with the most significant predictors (* p<0.05, *** p<0.001)
+Output of Cox Proportional Hazard Model with the most significant predictors (* p<0.05, ** p<0.001)
 \end{center}
+
+### Objective 2
 
 # 4 Discussion
 
-There might be bias because the doctors know the type of drug assigned.
+
 
 The results from this study may not be generalizable to entire population of stroke patients nowadays, because acute stroke care has changed in the recent years. At the time of this trial, thrombolytic therapy was not widely available, and none of the patients in this dataset patients received it [source]. Thus, the background stroke care for the included patients, might be more reflective of current stroke care in resource poor settings [source]. 
 
-For 2.1 we decided against using a Accelerated Failure Time model, because we do not have enough prior knowledge to appropriately specify a distribution for the error term.
 
 The focus of this analysis is not prediction, because we are only focusing in exploring the difference in the odds of a recurrent stroke. 
 
+We can see from the low estimates and high p-values for both that the treatment type is really not a significant predictor for number of adverse events or maximum level of severity 
+
+------- To conclude, we did not find any evidence for differences between the two types of drugs in terms of the adverse event indicators we used. 
+
+Answer is yes but not too much
+time to relapse, BUP-NX treatment seem to be better, after removing the patients who did not make it through induction, the two treatments really did not significantly differ  from each other
+
+Induction success, BUP-NX had a higher proportion of patients who made it through induction.
+
+Overall, BUP-NX is better at successfully inducting patients, but once past that, the two don't really differ
+
+There are a few limitations in this study.  one is prediction power relatively weak. While that is not the priority related to our objectives, it could use some improvement in the future. There might be bias because the doctors know the type of drug assigned.
 
 
 # Bibliography
@@ -236,6 +248,8 @@ The focus of this analysis is not prediction, because we are only focusing in ex
 
 [2] Virani SS, Alonso A, Benjamin EJ, Bittencourt MS, Callaway CW, Carson AP, et al. Heart disease and stroke statistics—2020 update: a report from the American Heart Associationexternal icon. Circulation. 2020;141(9):e139–e596.
 [3] https://www.stroke.org/en/life-after-stroke/preventing-another-stroke/anti-clotting-agents-explained
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3526137/
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC81628/
 
