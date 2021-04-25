@@ -216,27 +216,27 @@ Output of Cox Proportional Hazard Model with the most significant predictors (* 
 
 |Term | Exp(Estimate) | Standard Error | P-Value|
 |---------------- | ----------------: | ------------------:| :----------------- 
-| Treatment: Heparin            |   1.193 | 0.045 | 0.039  *  | 
-| Time delay       |    0.989 | 0.0019 | 0.152    |
-| Atrial fibrillation |  1.133 | 0.050  | <0.001 **| 
-| Sex: Male  |               1.007| 0.046  | 0.021 *  | 
-| Age  |                1.003  | 0.003 | <0.001 ** | 
-| Concious: Drowsy    |       1.296|  0.052 | <0.001 ** | 
-| Concious: Unconcious    |  0.594  |  0.106 |  <0.001 **
-| Infarct    |         1.0447  | 0.048  | 0.017  *  | 
-| Blood pressure   |    1.002 | 0.001 | 0.012 *  | 
-| Stroke subtype: LACS|   0.778955  | 0.086 | <0.001 ** | 
-| Stroke subtype: Other |    2.746752  | 0.504  | 0.241 |    
-| Stroke subtype: POCS |  1.108234  | 0.083 | 0.9169   |  
-| Stroke subtype: TACS  |  0.978518  | 0.061  | <0.001 ** | 
-| Physical deficit  |    1.035148  | 0.022  | <0.001 ** |
+| Treatment: Heparin            |   1.143  0.110616| 0.2267   | 
+| Time delay       |    0.986654 | 0.005 | 0.152    | 0.00523 **|
+| Atrial fibrillation |  1.123726 | 0.142 | 0.41130|
+| Sex: Male  |               0.997669 | 0.114 | 0.98366|
+| Age  |                1.004 | 0.005 | 0.45061 | 
+| Concious: Drowsy    |       1.302 | 0.135310 | 0.05133 | 
+| Concious: Unconcious    |  0.582 | 0.584637 |  0.35428  | 
+| Infarct    |         1.140967 | 0.121266| 0.27682 | 
+| Blood pressure   |    1.001416  | 0.002020 | 0.48356| 
+| Stroke subtype: LACS|   0.829387 | 0.164068 | 0.25421| 
+| Stroke subtype: Other |    2.722060 | 0.721111  | 0.16493|    
+| Stroke subtype: POCS |  1.141209 | 0.181548  | 0.46688|  
+| Stroke subtype: TACS  |  0.981690 | 0.160284 | 0.90821| 
+| Physical deficit  |    1.024709 | 0.052492  | 0.64193 |
+
 
 \begin{center}
 Output of Cox Proportional Hazard Model with the most significant predictors (* p<0.05, ** p<0.001)
 \end{center}
 
 
-### Objective 2
 
 # 4 Discussion
 
