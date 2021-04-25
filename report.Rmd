@@ -47,10 +47,6 @@ surv_object <- Surv(time = objective1$timedeath, event = objective1$death)
 ```
 
 ```{r}
-fit1 <- survfit(surv_object ~ 1, data = objective1)
-```
-
-```{r}
 fit2 <- survfit(surv_object ~ trt, data = objective1)
 ```
 
@@ -68,10 +64,6 @@ surv_object2 <- Surv(time = objective2$recurrentstrokedate, event = objective2$r
 ```
 
 ```{r}
-fit3 <- survfit(surv_object2 ~ 1, data = objective2)
-```
-
-```{r}
 fit4 <- survfit(surv_object2 ~ trt, data = objective2)
 ```
 
@@ -82,7 +74,7 @@ fit4 <- survfit(surv_object2 ~ trt, data = objective2)
 
 In the United States, 1 in every 6 deaths from cardiovascular disease is due to stroke, and every 4 minutes, someone dies of stroke. Around 87% of all strokes are ischemic strokes, in which blood flow to the brain is blocked. Hemorrhagic strokes occur when a blood vessel ruptures inside the brain. Stroke leads to long-term physical and psychological disability. [1][2]
 
-Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medications are used to prevent blood from clotting, therefore they may help reduce the risk of a recurrent stroke and death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications might reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action, and previous research shows that their comparative effectiveness is not clear. [3][4]
+Patients are at high risk of experiencing another stroke in the first few days after having the initial one. Blood-thinning medications are used to prevent blood from clotting, therefore they may help reduce the risk of a recurrent stroke and death. There are two main types of blood-thinners, anticoagulants and antiplatelet medications. Aspirin is a common antiplatelet drug which prevents platelets from coming together to form a clot. Heparin is an anticoagulant which slows the process of making clots in the body. Both these medications might reduce the likelihood of experiencing another stroke, but they follow different mechanisms of action, and previous research suggests that their comparative effectiveness is not clear. [3][4]
  
 ## 1.2 Research Goals
 
@@ -90,54 +82,56 @@ In this research, we intend to explore the comparative effectiveness of early ad
 
 ## 1.3 Data
 
-The data used in this project was modified from the original International Stroke Trial publication by Sandercock et al, who anonymized, formatted the dataset and made it publicly available. [5] IST was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, subcutenous heparin, both, or neither, and then followed throughout the clinical course of their stroke. The treatment was given immediately upon randomization. Assigned heparin dosages were either 5000 IU or 12,500 IU, while aspirin dosages were always 300 mg. Both the physicians and the patients were aware of the treatment assigned. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. The primary outcomes of the trial were recurrent stroke within 14 days, and death within 6 months of diagnosis.
+The data used in this project was modified from the original International Stroke Trial publication by Sandercock et al, who anonymized, formatted, and made the dataset publicly available. [5] IST was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, subcutenous heparin, both, or neither, and then followed throughout the clinical course of their stroke. The treatment was given immediately upon randomization. Assigned heparin dosages were either 5000 IU or 12,500 IU, while aspirin dosages were always 300 mg. Both the physicians and the patients were aware of the treatment assigned. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. The primary outcomes of the trial were recurrent stroke within 14 days, and death within 6 months of diagnosis.
 
 
 ## 1.4 Variables
 
-The response variables for the objectives are: (a) time-to-death and (b) time-to-recurrent stroke. The main predictor variable of interest is the treatment group, and the other variables are included to control for their effect on the treatment outcome. Across both objectives, the predictor variables include age, sex, systolic blood pressure, atrial fibrillation, time delay from stroke to treatment, physical deficit, state of consciousness and stroke subtype. These variables were chosen because they provide insight on the state of health of the patients at the time of randomization, and because existing literature has indicated a relationship between these variables and stroke fatalities. For example, sex, age, blood pressure and atrial fibrillation are considered critical factors in stroke pathology in previous studies. (https://www.ahajournals.org/doi/full/10.1161/strokeaha.115.009592#:~:text=Lowering%20blood%20pressure%20(BP)%20after,in%20hypertensive%20patients%20is%20unclear.)(https://academic.oup.com/endo/article/159/8/3120/5051605). Moreover, the association between different stroke subtypes and mortality is an active area of research, with several studies suggesting a possible relationship between the two, therefore we deemed it appropriate to include it in our study. Lastly, we believe that the presence of multiple stroke-related physical deficits and the state of consciousness of the patient might be indicators of the severity of the stroke, and the area of brain affected by it, which then might have an effect on recurrent strokes and/or death.
+### 1.4.1 Variable choice
 
-The treatment variable was created to describe the type of treatment that each patient received. This variable is categorical and has two levels: aspirin (`RXASP = "Y"` and `RHXEP= "N"`) and heparin (`RXHEP = "M"` or `"RXHEP = "H"` or `"RXHEP = "L"`, and `RXASP = "N"`). In the original trial, the patients assigned with heparin could receive two different dosages, however three different encodings were mistakenly used to indicate the amount used.
+The response variables for the objectives are: (a) time-to-death and (b) time-to-recurrent stroke. The main predictor variable of interest is the treatment group, and the other variables are included to control for their effect on the treatment outcome. Across both objectives, the predictor variables include age, sex, systolic blood pressure, atrial fibrillation, time delay from stroke to treatment, physical deficit, state of consciousness and stroke subtype. These variables were chosen because they provide insight on the state of health of the patients at the time of randomization, and because existing literature has indicated a relationship between these variables and stroke fatalities. For example, sex, age, blood pressure and atrial fibrillation are considered critical factors in stroke pathology in previous studies. [5][6]
 
-Given that most patients presented with a mixture of physical symptoms (face deficit, leg/foot deficit, hand/arm deficit, dysphasia, hemianopia, visuospatial disorder, brainstem/cerebellar signs), it was deemed appropriate to create the physical deficit variable to indicate the total number of symptoms that the patient experienced. Each symptom was considered present only if a physician had successfully diagnosed it. The physical deficit variable, age, systolic blood pressure, and atrial fibrillation are treated as numerical. The stroke subtype variable is treated as categorical, with five levels: total anterior circulation syndrome (TACS), partial anterior circulation syndrome (PACS), posterior circulation syndrome (POCS), lacunar syndrome (LACS) and other (in the case where the physician could not identify the subtype). Finally, the state of consciousness is treated as a categorical variable with three levels: fully conscious, drowsy and unconscious. 
+Moreover, the association between different stroke subtypes and mortality is an active area of research, with several studies suggesting a possible relationship between the two, therefore we deemed it appropriate to include it in our study. Lastly, we believe that the presence of multiple stroke-related physical deficits and the state of consciousness of the patient might be indicators of the severity of the stroke and the area of brain affected by it, which then might have an effect on recurrent strokes and/or death.
 
-It should be noted that patients with missing or incomplete trial data in any of the fields mentioned above were excluded from the study. The final dataset used in this study contains information on 9146 patients.
+### 1.4.2 Data cleaning
 
+The death variable was created to indicate if the patients were alive within 6 months after the stroke. The recurrent stroke variable was created to indicate if the patients experienced a second stroke (regardless of type) within 14 days after the initial stroke. The time variable was updated to reflect the intended follow-up time of the trial (6 months and 14 days), instead of the actual time of the follow up. This decision was made in support with our objectives for this study.
 
-XXX WRITE ABOUT THE STROKE< DEATH AND TIME VARIABLE
+The treatment variable was created to describe the type of treatment that each patient received. This variable is categorical and has two levels: aspirin and heparin. Since we are focusing on the comparative effectiveness of the two drugs, patients who were treated with both or neither drug were not included in the analysis. Moreover, given that most patients presented with a mixture of physical symptoms (face deficit, leg/foot deficit, hand/arm deficit, dysphasia, hemianopia, visuospatial disorder, brainstem/cerebellar signs), it was deemed appropriate to create the physical deficit variable to indicate the total number of symptoms that the patient experienced. Each symptom was considered present only if a physician had successfully diagnosed it. The physical deficit variable, age, systolic blood pressure, and atrial fibrillation are treated as numerical. The stroke subtype variable is treated as categorical, with five levels: total anterior circulation syndrome (TACS), partial anterior circulation syndrome (PACS), posterior circulation syndrome (POCS), lacunar syndrome (LACS) and other (in the case where the physician could not identify the subtype). Finally, the state of consciousness is treated as a categorical variable with three levels: fully conscious, drowsy and unconscious. It should be noted that a relatively small number of patients with missing or incomplete trial data in any of the fields mentioned above were excluded from the study. The final dataset used in this analysis contains information on 9146 patients.
 
 ## 1.5 Exploratory Data Analysis
 
-For both objectives, we chose an intention-to-treat analysis, which means that the study included all the patients regardless if they followed the directions for their treatment. Because the reasons for nonadherence to the protocol might be related to the patients' prognosis, the ITT analysis is considered more appropriate. Previous research has also showed strong indication to using ITT analysis in such cases. [5] 
-
-WRITE ABOUT THE FAKE CENSORING
+For both objectives, we chose an intention-to-treat analysis, which means that the study included all the patients regardless if they followed the protocol for their treatment. Because the reasons for nonadherence to the directions might be related to the patients' prognosis, the ITT analysis is considered more appropriate. Previous research has has showed strong indication to using ITT analysis in such cases. [5]
 
 ### 1.5.1 Objective 1
 
-We compared duration from the patients' stroke admission date to the patient's death date between the aspirin and heparin treatment groups. The Kaplan-Meier curve below shows that patients who received aspirin seem to have a higher survival probability than those who received heparin. However, it should be noted that the confidence intervals of these curves overlap significantly throughout the clinical course, especially in the earlier days, therefore it is not clear whether a this observed relationship is statistically significant.
+We compared duration from the patients' stroke admission date to the patients' death date between the aspirin and heparin treatment groups. The Kaplan-Meier curve below shows that patients who received aspirin seem to have a higher survival probability than those who received heparin. However, it should be noted that the confidence intervals of these curves overlap throughout the whole clinical course, especially in the earlier days, therefore it is not clear whether this observation is statistically significant.
 
 ```{r fig.align='center', fig.height=3.5, fig.width=5.5}
-ggsurvplot(fit2, xlab = "Days", ylab = "Est. Event Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("Aspirin", "Heparin"))
+ggsurvplot(fit2, xlab = "Days", ylab = "Est. Death Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("Aspirin", "Heparin"))
 ```
-*Figure 1. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, Aspirin vs Heparin*
+*Figure 1. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, death probability over time*
 
 
 ### 1.5.2 Objective 2
 
-We compared duration from the patients' stroke admission date to the patient's recurrent stroke date between the aspirin and heparin treatment groups. The Kaplan-Meier curve below shows that patients who received heparin seem to have a higher probability to experience recurrent strokes than those who received aspirin. Similarly as above, there is significant overlap in the confidence intervals of the Kaplain-Meier curves.
+We compared duration from the patients' stroke admission date to the patients' recurrent stroke date between the aspirin and heparin treatment groups. The Kaplan-Meier curve below shows that patients who received heparin seem to have a similar probability to experience recurrent strokes to those who received aspirin. There is significant overlap in the confidence intervals of the Kaplain-Meier curves.
 
 ```{r fig.align='center', fig.height=3.5, fig.width=5.5}
-ggsurvplot(fit4, xlab = "Days", ylab = "Est. Event Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("Aspirin", "Heparin"))
+ggsurvplot(fit4, xlab = "Days", ylab = "Est. Recurrent Stoke Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("Aspirin", "Heparin"))
 ```
-*Figure 2. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, Aspirin vs Heparin* 
+*Figure 2. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, recurrent stroke probability over time* 
 
 
 # 2 Methodology
 
+The statistical methods used in the original IST publication consisted of simple analyses of the total number of patients affected. [https://doi.org/10.1016/S0140-6736(97)04011-7]. The relative frequency of baseline characteristics among patients with and without aspirin use were compared with odds ratios and their 95% confidence intervals. The means of continuous variables were compared and tested for differences using a t test. [https://www.ahajournals.org/doi/epub/10.1161/01.STR.0000226740.29910.91]. Later publications such as the third International Stroke Trial (IST-3) use a survival analysis framework. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2442584/]
+
+We also decided to fit a survival model, because it allows us to control for potential confounders. We initially considered a parametric Accelerated Failure Time model. AFT models are fully parametric, and they include an error term which is assumed to follow a specific probability distribution. We do not have enough knowledge to appropriately specify such distribution, so we decided to use a more flexible model. Semiparametric AFT models were briefly considered, however their use is relatively scarce in applied research. [Buckley, Jonathan; James, Ian (1979), "Linear regression with censored data", Biometrika, 66 (3): 429–436, doi:10.1093/biomet/66.3.429, JSTOR 2335161, https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.4780111409]. We ultimately chose the Cox proportional hazard model, because it is a semiparametric model, and we do not have to make assumptions about the distribution of the baseline hazard function. Moreover, the Cox proportional hazard model is widely used in the medical community, which makes this analysis interpretable to other researchers in this field. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3227332/]
+
 ### 2.1 Mortality
 
-The Kaplan-Meier survival curves in subsection 1.5.1 showed significant overlap, thus the log-rank test is not very powerful in determining if there is a difference in risk of death within 6 months of acute stroke. We decided to fit a survival model, which allows us to control for potential confounders. We initially considered a parametric Accelerated Failure Time model. AFT models are fully parametric, and they include an error term which is assumed to follow a specific probability distribution. We do not have enough knowledge to appropriately specify such distribution, so we decided against it. Semiparametric AFT models we also briefly considered, however their use is relatively scarce in applied research.[Buckley, Jonathan; James, Ian (1979), "Linear regression with censored data", Biometrika, 66 (3): 429–436, doi:10.1093/biomet/66.3.429, JSTOR 2335161
-, https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.4780111409] We ultimately chose the Cox proportional hazard model, because it is a semiparametric model, and also we do not have to make assumptions about the distribution of the baseline hazard function. Moreover, the Cox proportional hazard model is widely used in the medical community, which makes this analysis interpretable to other researchers in this field.
+The Kaplan-Meier survival curves in subsection 1.5.1 showed significant overlap, thus the log-rank test is not very powerful in determining if there is a difference in risk of death within 6 months of acute stroke. We decided to fit a Cox proportional hazard model in order to explore the difference in risk of death within 6 months of acute stroke between the two treatment groups, after adjusting for potential confounders.
 
 The equation of our model is specified below:
 
@@ -166,7 +160,7 @@ We calculated the Schoenfeld residuals in order to evaluate the proportional haz
 
 ### 2.2 Recurrent Stroke
 
-The Kaplan-Meier survival curves in subsection 1.5.2 showed significant overlap, thus using a similar logic as above, we decided to fit a Cox proportional hazard model in order to explore the difference in risk of experiencing a recurrent stroke within 14 days of acute stroke between the two treatment groups, after adjusting for potential confounders.
+The Kaplan-Meier survival curves in subsection 1.5.2 showed significant overlap, thus using the same logic as above, we decided to fit a Cox proportional hazard model in order to explore the difference in risk of experiencing a recurrent stroke within 14 days of acute stroke between the two treatment groups, after adjusting for potential confounders.
 
 $$ 
 \lambda_i(t) = \lambda_0(t) * exp(\beta_1*I(treatment_i = Heparin) +
@@ -190,7 +184,7 @@ $$
 
 where $i$ describes the i-th patient
 
-More details regarding proportional hazards and model assumptions can be found in the Appendix section.
+More details regarding proportional hazard assumptions and model assumptions can be found in the Appendix section.
 
 # 3 Results
 
@@ -264,6 +258,15 @@ Overall, BUP-NX is better at successfully inducting patients, but once past that
 
 There are a few limitations in this study.  one is prediction power relatively weak. While that is not the priority related to our objectives, it could use some improvement in the future. There might be bias because the doctors know the type of drug assigned.
 
+
+
+https://pubmed.ncbi.nlm.nih.gov/9174558/
+Interpretation: Neither heparin regimen offered any clinical advantage at 6 months. The results suggest that if heparin is given in routine clinical practice, the dose should not exceed 5000 IU subcutaneously twice daily. For aspirin, the IST suggests a small but worthwhile improvement at 6 months. Taking the IST together with the comparably large Chinese Acute Stroke Trial, aspirin produces a small but real reduction of about 10 deaths or recurrent strokes per 1000 during the first few weeks. Both trials suggest that aspirin should be started as soon as possible after the onset of ischaemic stroke; previous trials have already shown that continuation of low-dose aspirin gives protection in the longer term.
+
+
+
+
+
 # Bibliography
 
 [1] Centers for Disease Control and Prevention. Underlying Cause of Death, 1999–2018. CDC WONDER Online Database. Atlanta, GA: Centers for Disease Control and Prevention; 2018. 
@@ -274,6 +277,10 @@ There are a few limitations in this study.  one is prediction power relatively w
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3526137/
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC81628/
+
+https://www.ahajournals.org/doi/full/10.1161/strokeaha.115.009592#:~:text=Lowering%20blood%20pressure%20(BP)%20after,in%20hypertensive%20patients%20is%20unclear.
+
+https://academic.oup.com/endo/article/159/8/3120/5051605
 
 [3] The International Stroke Trial (IST): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19435 patients with acute ischaemic stroke. International Stroke Trial Collaborative Group. Lancet. 1997 May 31;349(9065):1569-81. PMID: 9174558.
 
@@ -287,7 +294,7 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC81628/
 
 ```{r}
 coxm1 <- coxph(surv_object ~ trt  + timedelay + atrialfibrillation + sex + age + concious + infarct + bloodpressure + strokesubtype + physicaldeficit, data = objective1)
-#summary(coxm1)
+summary(coxm1)
 ```
 
 ```{r, fig.align="center"} 
@@ -307,7 +314,7 @@ Independence assumption is also satisfied as the survival times are independent 
 
 ```{r}
 coxm2 <- coxph(surv_object2 ~ trt  + timedelay + atrialfibrillation + sex + age + concious + infarct + bloodpressure + strokesubtype + physicaldeficit, data = objective2)
-#summary(coxm2)
+summary(coxm2)
 ```
 
 ```{r, fig.align="center"} 
