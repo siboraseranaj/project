@@ -78,12 +78,11 @@ Patients are at high risk of experiencing another stroke in the first few days a
  
 ## 1.2 Research Goals
 
-In this research, we intend to explore the comparative effectiveness of early administration of aspirin and heparin by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in time from diagnosis of the acute stroke until a recurrent stroke. The null hypotheses for these objectives would be that the treatments do not differ after controlling for potential confounders.
+In this research, we intend to explore the comparative effectiveness of early administration of aspirin and subcutaneous heparin by focusing on two objectives: a) the difference in time from diagnosis of the acute stroke until death, and b) the difference in time from diagnosis of the acute stroke until a recurrent stroke. The null hypotheses for these objectives would be that the treatments do not differ after controlling for potential confounders.
 
 ## 1.3 Data
 
 The data used in this project was modified from the original International Stroke Trial publication by Sandercock et al, who anonymized, formatted, and made the dataset publicly available. [5] IST was a randomized, open label trial that was conducted from 1991 to 1996. Patients were administered aspirin, subcutenous heparin, both, or neither, and then followed throughout the clinical course of their stroke. The treatment was given immediately upon randomization. Both the physicians and the patients were aware of the treatment assigned. All patients included in the study were clinically diagnosed with acute stroke in the previous 48 hours, and showed no clear indication for neither aspirin or heparin. There was no upper age limit, and the CT scan confirmed the diagnosis of the stroke before randomization. The primary outcomes of the trial were recurrent stroke within 14 days, and death within 6 months of diagnosis. [6]
-
 
 ## 1.4 Variables
 
@@ -93,10 +92,9 @@ Sex, age, and atrial fibrillation are considered critical factors in stroke path
 
 ## 1.5 Data Cleaning
 
-The death variable was created to indicate if the patients were alive within 6 months after the stroke. The recurrent stroke variable was created to indicate if the patients experienced a second stroke (regardless of type) within 14 days after the initial stroke. Every event happening after 14 days or 6 months was censored. This decision was made in support with our objectives for the study.
+The death variable was created to indicate if the patients were alive within 6 months after the stroke. The recurrent stroke variable was created to indicate if the patients experienced a second stroke (regardless of type) within 14 days after the initial stroke. Events happening after 14 days or 6 months were censored. This decision was made in support with our objectives for the study.
 
 The treatment variable was created to describe the type of treatment that each patient received. This variable is categorical and has two levels: aspirin and heparin. Since we are focusing on the comparative effectiveness of the two drugs, patients who were treated with both or neither drug were not included in the analysis. Moreover, given that most patients presented with a mixture of physical symptoms (face deficit, leg/foot deficit, hand/arm deficit, dysphasia, hemianopia, visuospatial disorder, brainstem/cerebellar signs), it was deemed appropriate to create the physical deficit variable to indicate the total number of symptoms that the patient experienced. Each symptom was considered present only if a physician had successfully diagnosed it. The physical deficit variable, age, and atrial fibrillation are treated as numerical. Following the classification from Oxfordshire Community Stroke Project [9], the stroke subtype variable is treated as categorical, with five levels: total anterior circulation syndrome (TACS), partial anterior circulation syndrome (PACS), posterior circulation syndrome (POCS), lacunar syndrome (LACS) and other (in the case where the physician could not identify the subtype). Finally, the state of consciousness is treated as a categorical variable with three levels: fully conscious, drowsy and unconscious. It should be noted that a small number of patients with missing or incomplete trial data in any of the fields mentioned above were excluded from the study. The final dataset used in this analysis contains information on 9146 patients.
-
 
 ## 1.5 Exploratory Data Analysis
 
@@ -126,9 +124,9 @@ ggsurvplot(fit4, xlab = "Days", ylab = "Est. Recurrent Stoke Probability", conf.
 
 ### 2.1 Model Choice
 
-The statistical methods used in the original IST publication consisted of simple analyses of the total number of patients affected. [11]. The relative frequency of baseline characteristics among patients with different drug use were compared with odds ratios and their 95% confidence intervals. The means of continuous variables were compared and tested for differences using a t-test. [12]. Later publications in stroke research, such as the third International Stroke Trial (IST-3), use a survival analysis framework. [13]
+The statistical methods used in the original IST publication consisted of simple analyses of the total number of patients affected. [11] The relative frequency of baseline characteristics among patients with different drug use were compared with odds ratios and their 95% confidence intervals. The means of continuous variables were compared and tested for differences using a t-test. [12] Later publications in stroke research, such as the third International Stroke Trial (IST-3), use a survival analysis framework. [13]
 
-We also decided to fit a survival model, as it is a common approach in analyzing clinical trial data, and it allows us to control for potential confounders. We initially considered a parametric Accelerated Failure Time model. AFT models are fully parametric, and they include an error term which is assumed to follow a specific probability distribution. We do not have enough knowledge to appropriately specify such distribution, therefore we decided to use a more flexible model. Semiparametric AFT models were briefly considered, however their use is relatively scarce in applied research. [14]. We ultimately chose the Cox Proportional Hazard model, because it is a semiparametric model, and we do not have to make assumptions about the distribution of the baseline hazard function. Moreover, the Cox proportional hazard model is widely used in the medical community, which makes this analysis interpretable to other researchers in this field. [15]
+We also decided to fit a survival model, as it is a common approach in analyzing clinical trial data, and it allows us to control for potential confounders. We initially considered a parametric Accelerated Failure Time model. AFT models are fully parametric, and they include an error term which is assumed to follow a specific probability distribution. We do not have enough knowledge to appropriately specify such distribution, therefore we decided to use a more flexible model. Semiparametric AFT models were briefly considered, however their use is relatively scarce in applied research. [14] We ultimately chose the Cox Proportional Hazard model, because it is a semiparametric model, and we do not have to make assumptions about the distribution of the baseline hazard function. Moreover, the Cox proportional hazard model is widely used in the medical community, which makes this analysis interpretable to other researchers in this field. [15]
 
 ### 2.1.1 Objective 1
 
@@ -166,7 +164,7 @@ The Kaplan-Meier survival curves in subsection 1.5.2 had significant overlap, th
 
 ### 3.1 Objective 1
 
-The results of the Cox proportional hazard model are presented in the table below. The coefficient estimate for the treatment variable is statistically significant at the 0.05 level, and the 95% confidence interval does not include zero. Several other variables are also statistically significant, similar to what prior studies have suggested.
+The results of the Cox Proportional Hazard model are presented in the table below. The coefficient estimate for the treatment variable is statistically significant at the 0.05 level, and the 95% confidence interval does not include zero. Several other variables are also statistically significant, similar to what prior studies have suggested.
 \newline
 
 ```{r}
@@ -197,7 +195,7 @@ Output of Cox Proportional Hazard Model for Mortality (* p<0.05, ** p<0.001)
 
 ### 3.2 Objective 2
 
-The results of the Cox Proportional Hazard model are presented in the table below. In contrast to the first objective, the coefficient estimate for treatment is statistically insignificant. Besides conscious, no additional variables have statistically significant estimates.
+The results of the Cox Proportional Hazard model are presented in the table below. In contrast to the first objective, the coefficient estimate for treatment is statistically insignificant. Besides drowsy state of consciousness, no additional variables have statistically significant estimates.
 \newline
 
 ```{r}
@@ -232,19 +230,18 @@ Output of Cox Proportional Hazard Model for Recurrent Stroke (* p<0.05, ** p<0.0
 
 ## 4.1 Interpretation of Results
 
-We find sufficient evidence at the 0.05 level to reject the null hypothesis that treatment does not play a role in mortality at 6 months. Our analysis suggests that holding all else equal, there is an 0.092 multiplicative increase in hazard when patients are treated with heparin instead of aspirin, as evidenced by the coefficients of the first Cox model. The 95% confidence interval for this effect ranges from 0.005 to 0.18 as a multiplicative increase. Despite model concerns which we address in the subsection below, our finding is consistent with that of the original IST publication, which showed that heparin treatment did not offer a clinical advantage at 6 months, while aspirin showed small but worthwhile improvement. [16]. The Chinese Acute Stoke Trial has also produced similar results, in which aspirin reduced the risk of death during the first few weeks. In contrast, we did not find sufficient evidence to reject the null hypothesis that treatment does not play a role in recurrent strokes at 14 days.
+We find evidence at the 0.05 level to reject the null hypothesis that treatment does not play a role in mortality at 6 months. Our analysis suggests that holding all else equal, there is an 0.093 multiplicative increase in hazard when patients are treated with heparin instead of aspirin, as indicated by the coefficients of the first Cox model. The 95% confidence interval for this effect ranges from 0.006 to 0.181 as a multiplicative increase. Despite assumption concerns which we address in the subsection below, our finding is consistent with that of the original IST publication, which showed that heparin treatment did not offer a clinical advantage at 6 months, while aspirin showed small but worthwhile improvement. [16] The Chinese Acute Stoke Trial has also produced similar results, in which aspirin reduced the risk of death during the first few weeks. In contrast, for our second objective we did not find sufficient evidence to reject the null hypothesis that treatment does not play a role in recurrent strokes at 14 days.
 
 ## 4.2 Strengths and Weaknessess
 
 A strength of this analysis is attributed to the quality of the data used. The dataset is large, with complete baseline data and over 99% follow-up data. There is a large number of patients over 80, despite the historical underrepresentation of elderly patients in stroke trials. [17] Moreover, our findings are consistent with those of previous publications in the field as discussed above, despite the use of a different approach. Given the international and inclusive nature of this trial, the results appear to be relevant to a wide, diverse population. 
+There are however several weaknesses in this study. The main concern is the violation for the proportional hazard assumption for both models for the age variable. A possible reason for violation of this assumption for age is intuitive; the ratio of the hazards for patients of different age increases with time (instead of staying constant, as the model assumes), since the brain and body lose their ability to recover at older age. We recommend in the future that a modified Cox model, such as the Stratified Cox Proportional Hazards model is used instead. In this approach, covariates with nonproportional effects such as age, are included in the model as stratification factors rather than predictors. [18] There is also concern for model assumptions violation for the time-to-recurrent stroke model, as Deviance residuals are not distributed around mean 0 with a variance of 1.
 
-There are however several weaknesses in this study. The main concern is the violation for the proportional hazard assumption for both models for the age variable. We recommend in the future that a Stratified Proportional Hazards model is used instead. In this approach, covariates with nonproportional effects are incorporated into the model as stratification factors rather than predictors. The reason for violation of the PH assumption for age is intuitive; the ratio of the hazards for patients of different age increases with time (instead of staying constant, as the model assumes), since the brain and body lose their ability to recover at older age. There is also concern for model assumptions violation for the time-to-recurrent stroke model, as Deviance residuals are not distributed around mean 0 with a variance of 1.
-
-Moreover, some degree of bias might have been introduced to the study, because even though treatment assignment was randomized, the doctors were aware of the treatment each patient received. This might have influenced how they cared for the patient during the clinical course of the stroke after randomization, by possibly prescribing additional medications, or suggesting different physical or psychotherapies. Moreover, the results from this analysis may not be generalizable to entire population of stroke patients nowadays, because acute stroke care has changed in the recent years. [17] At the time of this trial, thrombolytic therapy, such as tissue plasminogen activator therapy [18], was not widely available, and none of the patients in this dataset received it [19]. Thus, the background stroke care for the included patients might be more reflective of current stroke care in resource poor environments [20]. 
+Furthermore, some degree of bias might have been introduced to the study, because even though treatment assignment was randomized, the doctors were aware of the treatment each patient received. This might have influenced how they cared for the patient during the clinical course of the stroke after randomization, by possibly prescribing additional medications, or suggesting different physical or psychotherapies. Moreover, the results from this analysis may not be generalizable to entire population of stroke patients nowadays, because acute stroke care has improved in the recent years. [19] At the time of this trial, thrombolytic therapy, such as tissue plasminogen activator therapy [20], was not widely available, and none of the patients in this dataset received it. [21] Thus, the background stroke care for the included patients might be more reflective of current stroke care in resource poor environments. [22] 
 
 ## 4.3 Future Work
 
-The framework of this analysis provides a promising opportunity for future work in stroke research. First, different methods should be used in order to try to fix the violated assumptions, such as the stratification method described above. Other models besides a survival analysis may be also used, but we believe that this is the most appropriate method, given the nature of the time-to-event data and interpretability within the medical field. The developing world is facing an increase in the average age of the population, and an increase in acute stroke, and the IST data is an good start to gain a deeper understanding of stroke in elderly patients, especially those in resource poor environments. 
+The framework of this analysis provides a promising opportunity for future developments in stroke research. First, different methods should be used in order to try to satisfy model assumptions, such as the stratification technique described above. Other methods besides survival analysis may also be useful, but we believe that this is the most appropriate method, given the nature of the time-to-event data and interpretability within the medical field. The developing world is facing an increase in the average age of the population, and an increase in acute stroke, and analysis on IST data is a good start to gain a deeper understanding of stroke, especially in elderly patients.
 
 # Bibliography
 
@@ -258,9 +255,9 @@ The framework of this analysis provides a promising opportunity for future work 
 
 [5] The International Stroke Trial (IST): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19435 patients with acute ischaemic stroke. International Stroke Trial Collaborative Group. Lancet. 1997 May 31;349(9065):1569-81. PMID: 9174558.
 
-[6] Sandercock, P.A., Niewada, M., Członkowska, A. et al. The International Stroke Trial database. Trials 12, 101 (2011). https://doi.org/10.1186/1745-6215-12-101 
+[6] Sandercock, P.A., Niewada, M., Członkowska, A. et al. The International Stroke Trial database. Trials 12.  
 
-[7] Age and Sex Are Critical Factors in Ischemic Stroke Pathology Meaghan Roy-O’Reilly, Louise D McCullough Endocrinology, Volume 159, Issue 8, 2018, https://doi.org/10.1210/en.2018-00465 
+[7] Age and Sex Are Critical Factors in Ischemic Stroke Pathology Meaghan Roy-O’Reilly, Louise D McCullough Endocrinology, Volume 159, Issue 8, 2018
 
 [8] Aristeidis H Katsanos, Hooman Kamel, Jeff S. Healey, Robert G. Hart. 2020;142:2371–2388 
 
@@ -269,26 +266,28 @@ The framework of this analysis provides a promising opportunity for future work 
 [10] Montori VM, Guyatt GH. Intention-to-treat principle. CMAJ. 2001;165(10):1339-1341. 
 
 [11] The International Stroke Trial (IST): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19435 patients with acute ischaemic stroke,
-The Lancet, Volume 349, Issue 9065, 1997, Pages 1569-1581, ISSN 0140-6736, https://doi.org/10.1016/S0140-6736(97)04011-7.
+The Lancet, Volume 349, Issue 9065, 1997, Pages 1569-1581, ISSN 0140-6736
 
-[12]  Previous Use of Aspirin and Baseline Stroke Severity, StrokeVolume 37, Issue 7, 1 July 2006, Pages 1737-1740 https://doi.org/10.1161/01.STR.0000226740.29910.91
-
+[12]  Previous Use of Aspirin and Baseline Stroke Severity, StrokeVolume 37, Issue 7, 1 July 2006, Pages 1737-1740 
 [13] Sandercock P, Lindley R, Wardlaw J, et al. Third international stroke trial (IST-3) of thrombolysis for acute ischaemic stroke. Trials. 2008;9:37. Published 2008 Jun 17. doi:10.1186/1745-6215-9-37 
 
-[14] Buckley, Jonathan; James, Ian (1979), "Linear regression with censored data", Biometrika, 66 (3): 429–436, doi:10.1093/biomet/66.3.429, JSTOR 2335161, https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.4780111409
+[14] Buckley, Jonathan; James, Ian (1979), "Linear regression with censored data", Biometrika, 66 (3): 429–436, doi:10.1093/biomet/66.3.429, JSTOR 2335161, 
 
 [15] Singh R, Mukhopadhyay K. Survival analysis in clinical trials: Basics and must know areas. Perspect Clin Res. 2011;2(4):145-148. doi:10.4103/2229-3485.86872
 
 [16] The International Stroke Trial (IST): a randomised trial of aspirin, subcutaneous heparin, both, or neither among 19435 patients with acute ischaemic stroke. International Stroke Trial Collaborative Group. Lancet. 1997;349(9065):1569-1581.
 
-[17] Weir NU, Sandercock P, Lewis SC, Signorini D, Warlow CP, on behalf of the IST Collaborative Group. Variations between countries in outcome after stroke in the International Stroke Trial (IST). Stroke 2001, 32:1370-1377.
+[17] Sanossian N, Ovbiagele B. Prevention and management of stroke in very elderly patients. Lancet Neurol 2009, 8:1031-1041.
 
-[18] Roth JM. Recombinant tissue plasminogen activator for the treatment of acute ischemic stroke. Proc (Bayl Univ Med Cent). 2011;24(3):257-259. doi:10.1080/08998280.2011.11928729 
+[18] The Stratified Cox Procedure. NJIT education, Survival Analysis Self Learning Textbook. Chapter 5. 
 
-[19] Irwin P, Hoffman A, Lowe D, Pearson M, Rudd AG. Improving clinical practice in stroke through audit: results of three rounds of National Stroke Audit. J Eval Clin Pract 2005, 11:306-314.
+[19] Weir NU, Sandercock P, Lewis SC, Signorini D, Warlow CP, on behalf of the IST Collaborative Group. Variations between countries in outcome after stroke in the International Stroke Trial (IST). Stroke 2001, 32:1370-1377.
 
-[20] Kengne AP, Anderson CS. The neglected burden of stroke in Sub-Saharan
-Africa. International Journal of Stroke 2006, 1:180-190.
+[20] Roth JM. Recombinant tissue plasminogen activator for the treatment of acute ischemic stroke. Proc (Bayl Univ Med Cent). 2011;24(3):257-259. doi:10.1080/08998280.2011.11928729 
+
+[21] Irwin P, Hoffman A, Lowe D, Pearson M, Rudd AG. Improving clinical practice in stroke through audit: results of three rounds of National Stroke Audit. J Eval Clin Pract 2005, 11:306-314.
+
+[22] Kengne AP, Anderson CS. The neglected burden of stroke in Sub-Saharan Africa. International Journal of Stroke 2006, 1:180-190.
 
 
 # 5 Appendix
