@@ -107,7 +107,7 @@ We compared duration from the patients' stroke admission date to the patients' d
 ```{r fig.align='center', fig.height=3.2, fig.width=5.5}
 ggsurvplot(fit2, xlab = "Days", ylab = "Est. Death Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("Aspirin", "Heparin"))
 ```
-*Figure 1. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, death probability over time*
+*Figure 1. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, estimated death probability over time*
 
 
 ### 1.5.2 Objective 2
@@ -117,7 +117,7 @@ We compared duration from the patients' stroke admission date to the patients' r
 ```{r fig.align='center', fig.height=3.2, fig.width=5.5}
 ggsurvplot(fit4, xlab = "Days", ylab = "Est. Recurrent Stoke Probability", conf.int = T, censor = F, fun = "event", legend.labs = c("Aspirin", "Heparin"))
 ```
-*Figure 2. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, recurrent stroke probability over time* 
+*Figure 2. Kaplan-Meier estimate of the survival curve in intention-to-treat analysis, estimated recurrent stroke probability over time* 
 
 
 # 2 Methodology
@@ -218,9 +218,9 @@ Conscious = Unconscious|	-0.480 |	0.584|	-1.625 to 0.665|	0.411|
 Infarct|	0.044|	0.118|	-0.186 to 0.275|	0.706|
 Physical deficit|	0.029|	0.052|	-0.073 to 0.132|	0.576|
 Stroke subtype = LACS|	-0.205|	0.164|	-0.526 to 0.116|	0.211|
-Stroke subtype = Other|	0.974	| 0.721|	-0.439 to 2.387|	0.177|
 Stroke subtype = POCS|	0.120|	0.181|	-0.236 to 0.475|	0.509 |
 Stroke subtype = TACS|	-0.004| 	0.160|	-0.318 to 0.310|	0.981|
+Stroke subtype = Other|	0.974	| 0.721|	-0.439 to 2.387|	0.177|
 
 \begin{center}
 Output of Cox Proportional Hazard Model for Recurrent Stroke (* p<0.05, ** p<0.001)
