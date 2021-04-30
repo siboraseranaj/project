@@ -122,7 +122,7 @@ ggsurvplot(fit4, xlab = "Days", ylab = "Est. Recurrent Stoke Probability", conf.
 
 # 2 Methodology
 
-### 2.1 Model Choice
+## 2.1 Model Choice
 
 The statistical methods used in the original IST publication consisted of simple analyses of the total number of patients affected. [11] The relative frequency of baseline characteristics among patients with different drug use were compared with odds ratios and their 95% confidence intervals. The means of continuous variables were compared and tested for differences using a t-test. [12] Later publications in stroke research, such as the third International Stroke Trial (IST-3), use a survival analysis framework. [13]
 
@@ -141,21 +141,21 @@ $$
 \beta_2*I(atrial\: fibrillation_i = Yes) + \beta_3*I(sex_i = M) \ + 
 $$
 $$
-\beta_4*I(age) + \beta_5*I(concious_i = Drowsy) + \beta_6*I(concious_i = Unconcious)  +
+\beta_4*I(age) + \beta_5*I(concious_i = Drowsy) + \beta_6*I(concious_i = Unconcious) \ +
 $$
 $$
-\beta_7*I(physical\: deficit_i) + \beta_8*I(stroke\:subtype_i = LASC) \ +
+\beta_7*I(physical\: deficit_i) + \beta_8*I(stroke\:subtype_i = LACS) \ +
 $$
 $$
 \beta_9*I(stroke\:subtype_i = POCS) + \beta_{10}*I(stroke\:subtype_i = TACS) \ +
 $$
 $$
-\beta_{11}*I(stroke\:subtype_i = LACS) + \beta_{12}*I(stroke\:subtype_i = Other))
+\beta_{11}*I(stroke\:subtype_i = Other))
 $$
 where $i$ describes the i-th patient.
 
 
-### 2.2.2 Objective 2
+### 2.1.2 Objective 2
 
 The Kaplan-Meier survival curves in subsection 1.5.2 had significant overlap, thus using the same logic as above, we decided to fit a Cox Proportional Hazard Model with the same specification. More details regarding proportional hazard assumptions and model assumptions for this objective can be found in the Appendix section.
 
@@ -174,13 +174,13 @@ coxm1 <- coxph(surv_object ~ trt + atrialfibrillation + sex + age + concious + i
 #tab1$CI <- paste(round(tab1$conf.low, digits = 3), round(tab1$conf.high, digits = 3), sep = " to ")
 #tab1 %>% dplyr::select(-statistic, -conf.low, -conf.high) %>% kable(digits = 3, col.names = c("term", "estimate", "standard error", "p.value", "95% CI"))
 ```
-Term |	estimate |	standard error| 95% confidence interval| 	p-value	 |
+term |	estimate |	standard error| 95% confidence interval| 	p-value	 |
 ---------------- | ----------------: | ------------------:|----------------:| :-------------
 Treatment = Heparin	| 0.093|	0.045|	0.006 to 0.181 |	0.037 *|
 Atrial fibrillation |	0.350|	0.050|	0.252 to 0.449 | <0.001 **|
 Sex = Male|	0.117	| 0.046	| 0.027 to 0.207|	0.011 * |
 Age	|0.044|	0.003|	0.039 to 0.049	| <0.001 **|
-Conscious = Drowsy	| 0.960	| 0.051	|0.86 to 1.061	| <0.001 **|
+Conscious = Drowsy	| 0.960	| 0.051	|0.860 to 1.061	| <0.001 **|
 Conscious = Unconscious	| 2.285	| 0.106	| 2.077 to 2.492 |	<0.001 **|
 Infarct	| 0.097 |	0.047 |	0.005 to 0.188	| 0.038 *|
 Physical deficit	|0.144	| 0.022|	0.101 to 0.187	|<0.001 **|
@@ -207,20 +207,20 @@ coxm2 <- coxph(surv_object2 ~ trt  + atrialfibrillation + sex + age + concious +
 #tab2 %>% dplyr::select(-statistic, -conf.low, -conf.high) %>% kable(digits = 3, col.names = c("term", "estimate", "standard error", "p.value", "95% CI"))
 ```
 
-term |	estimate |	standard error|  95% CI	| p-value	 |
+term |	estimate |	standard error|  95% confidence interval	| p-value	 |
 ---------------- | ----------------: | ------------------:|----------------:| :-------------
-Treatment = Heparin	 | 0.139 |	0.111 |	-0.078 to 0.355 |	0.21|
+Treatment = Heparin	 | 0.139 |	0.111 |	-0.078 to 0.355 |	0.210|
 Atrial fibrillation	| 0.128 |	0.142	| -0.15 to 0.406	| 0.367|
 Sex = Male |	-0.003	| 0.113 |	-0.226 to 0.219 |	0.976|
 Age|	0.004|	0.005|	-0.006 to 0.014|	0.462|
 Conscious = Drowsy|	0.292|	0.135|	0.027 to 0.556|	0.031 *|
-Conscious = Unconscious|	-0.48|	0.584|	-1.625 to 0.665|	0.411|
+Conscious = Unconscious|	-0.480 |	0.584|	-1.625 to 0.665|	0.411|
 Infarct|	0.044|	0.118|	-0.186 to 0.275|	0.706|
-Physical deficit|	0.029|	0.052|	-0.073 to 0.13|	0.576|
+Physical deficit|	0.029|	0.052|	-0.073 to 0.132|	0.576|
 Stroke subtype = LACS|	-0.205|	0.164|	-0.526 to 0.116|	0.211|
 Stroke subtype = Other|	0.974	| 0.721|	-0.439 to 2.387|	0.177|
-Stroke subtype = POCS|	0.12|	0.181|	-0.236 to 0.475|	0.509 |
-Stroke subtype = TACS|	-0.004| 	0.16|	-0.318 to 0.31|	0.981|
+Stroke subtype = POCS|	0.120|	0.181|	-0.236 to 0.475|	0.509 |
+Stroke subtype = TACS|	-0.004| 	0.160|	-0.318 to 0.310|	0.981|
 
 \begin{center}
 Output of Cox Proportional Hazard Model for Recurrent Stroke (* p<0.05, ** p<0.001)
