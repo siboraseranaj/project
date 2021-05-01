@@ -157,7 +157,7 @@ where $i$ describes the i-th patient.
 
 ### 2.1.2 Objective 2
 
-The Kaplan-Meier survival curves in subsection 1.5.2 had significant overlap, thus using the same logic as above, we decided to fit a Cox Proportional Hazard Model with the same specification. More details regarding proportional hazard assumptions and model assumptions for this objective can be found in the Appendix section.
+The Kaplan-Meier survival curves in subsection 1.5.2 had significant overlap, thus using the same logic as above, we decided to fit a Cox Proportional Hazard model with the same specification. More details regarding proportional hazard assumptions and model assumptions for this objective can be found in the Appendix section.
 
 
 # 3 Results
@@ -210,7 +210,7 @@ coxm2 <- coxph(surv_object2 ~ trt  + atrialfibrillation + sex + age + concious +
 term |	estimate |	standard error|  95% confidence interval	| p-value	 |
 ---------------- | ----------------: | ------------------:|----------------:| :-------------
 Treatment = Heparin	 | 0.139 |	0.111 |	-0.078 to 0.355 |	0.210|
-Atrial fibrillation	| 0.128 |	0.142	| -0.15 to 0.406	| 0.367|
+Atrial fibrillation	| 0.128 |	0.142	| -0.150 to 0.406	| 0.367|
 Sex = Male |	-0.003	| 0.113 |	-0.226 to 0.219 |	0.976|
 Age|	0.004|	0.005|	-0.006 to 0.014|	0.462|
 Conscious = Drowsy|	0.292|	0.135|	0.027 to 0.556|	0.031 *|
